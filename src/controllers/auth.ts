@@ -6,7 +6,7 @@ import { JWT_SECRET } from "../secrets";
 import { BadRequestException } from "../exceptions/bad-request";
 import { ErrorCodes } from "../exceptions/root";
 import { signupSchema } from "../schema/users";
-import { UnprocessableEntity } from "../exceptions/validation";
+import { NotFoundException } from "../exceptions/not-found";
 
 export const signup = async (req:Request,res:Response,next:NextFunction) => {
     signupSchema.parse(req.body)
@@ -15,8 +15,7 @@ export const signup = async (req:Request,res:Response,next:NextFunction) => {
     let user = await prismaClient.user.findFirst({where:{email}})
 
     if(user){
-        console.log("hello")
-        next(new BadRequestException("User already Exist",ErrorCodes.USER_ALREADY_EXISTS))
+        throw new BadRequestException("User already Exist",ErrorCodes.USER_ALREADY_EXISTS)
     }
     
     user = await prismaClient.user.create({
@@ -26,7 +25,7 @@ export const signup = async (req:Request,res:Response,next:NextFunction) => {
             password:hashSync(password,10)
         }
     })
-    res.json({user})
+    return res.json({user})
    
 
 }
@@ -37,10 +36,10 @@ export const login = async (req:Request,res:Response) => {
     let user = await prismaClient.user.findFirst({where:{email}})
 
     if(!user){
-        throw Error ("User does not  Exist..")
+        throw new NotFoundException("User does not  Exist..",ErrorCodes.USER_NOT_FOUND)
     }
     if(!compareSync(password,user.password)){
-        throw Error ("Incorrect Password !!")
+        throw new NotFoundException("Incorrect Password..",ErrorCodes.INCORRECT_PASSWORD)
     }
 
     const token = jwt.sign({
@@ -48,4 +47,9 @@ export const login = async (req:Request,res:Response) => {
     },JWT_SECRET)
     
     res.json({user,token})
+}
+
+
+export const me = async (req:Request,res:Response) => {
+    res.json(req.user)
 }

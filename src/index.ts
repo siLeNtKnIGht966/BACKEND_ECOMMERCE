@@ -15,7 +15,7 @@ app.use("/api",rootRouter)
 app.use(errorMiddleware)
 
 export const prismaClient = new PrismaClient({
-    log:["query"]
+    
 })
 
 
