@@ -8,6 +8,8 @@ import { ErrorCodes } from "../exceptions/root";
 import { signupSchema } from "../schema/users";
 import { NotFoundException } from "../exceptions/not-found";
 
+
+// Sign Up a new User.
 export const signup = async (req:Request,res:Response,next:NextFunction) => {
     signupSchema.parse(req.body)
     const {email,password,name} = req.body;
@@ -15,7 +17,7 @@ export const signup = async (req:Request,res:Response,next:NextFunction) => {
     let user = await prismaClient.user.findFirst({where:{email}})
 
     if(user){
-        throw new BadRequestException("User already Exist",ErrorCodes.USER_ALREADY_EXISTS)
+        throw new BadRequestException("User already Exist",ErrorCodes.USER_ALREADY_EXISTS,null)
     }
     
     user = await prismaClient.user.create({
@@ -30,6 +32,7 @@ export const signup = async (req:Request,res:Response,next:NextFunction) => {
 
 }
 
+// Login the User..
 export const login = async (req:Request,res:Response) => {
     const {email,password} = req.body;
 
@@ -50,6 +53,7 @@ export const login = async (req:Request,res:Response) => {
 }
 
 
+//
 export const me = async (req:Request,res:Response) => {
     res.json(req.user)
 }

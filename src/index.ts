@@ -1,7 +1,7 @@
 import express ,{Express,Request,Response}from "express"
 import { PORT } from "./secrets";
 import rootRouter from "./routes";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../src/generated/prisma"
 import { errorMiddleware } from "./middlewares/errors";
 import { signupSchema } from "./schema/users";
 
