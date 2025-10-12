@@ -39,10 +39,10 @@ export const login = async (req:Request,res:Response) => {
     let user = await prismaClient.user.findFirst({where:{email}})
 
     if(!user){
-        throw new NotFoundException("User does not  Exist..",ErrorCodes.USER_NOT_FOUND)
+        throw new NotFoundException("User does not  Exist..",ErrorCodes.USER_NOT_FOUND,null)
     }
     if(!compareSync(password,user.password)){
-        throw new NotFoundException("Incorrect Password..",ErrorCodes.INCORRECT_PASSWORD)
+        throw new NotFoundException("Incorrect Password..",ErrorCodes.INCORRECT_PASSWORD,null)
     }
 
     const token = jwt.sign({
@@ -53,7 +53,7 @@ export const login = async (req:Request,res:Response) => {
 }
 
 
-//
+// get the authorized data for the user...
 export const me = async (req:Request,res:Response) => {
     res.json(req.user)
 }
