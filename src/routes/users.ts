@@ -2,13 +2,14 @@ import { Router } from "express";
 import { errorHandler } from "../error-handler";
 import { authMiddleware } from "../middlewares/auth";
 import adminMiddleware from "../middlewares/admin";
-import { addAddress, deleteAddress, listAddress } from "../controllers/users";
+import { addAddress, deleteAddress, listAddress, updateUser } from "../controllers/users";
 
 const usersRoutes:Router = Router()
 
-usersRoutes.post("/address",[authMiddleware,adminMiddleware],errorHandler(addAddress))
-usersRoutes.delete("/address",[authMiddleware,adminMiddleware],errorHandler(deleteAddress))
-usersRoutes.get("/address",[authMiddleware,adminMiddleware],errorHandler(listAddress))
+usersRoutes.post("/address",[authMiddleware],errorHandler(addAddress))
+usersRoutes.delete("/address/:id",[authMiddleware],errorHandler(deleteAddress))
+usersRoutes.get("/address",[authMiddleware],errorHandler(listAddress))
+usersRoutes.put("/",[authMiddleware],errorHandler(updateUser))
 
 
 

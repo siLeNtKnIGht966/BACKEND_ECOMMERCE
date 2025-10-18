@@ -6,3 +6,10 @@ export const signupSchema = z.object({
     password:z.string().min(6)
 
 })
+
+export const updateSchema = z.object({
+    name:z.string().optional(),
+    defaultShippingAddress:z.number().optional(),
+    defaultBillingAddress:z.number().optional(),
+
+})
