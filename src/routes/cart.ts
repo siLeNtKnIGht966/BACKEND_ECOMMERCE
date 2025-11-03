@@ -1,0 +1,15 @@
+import { Router } from "express";
+import { errorHandler } from "../error-handler";
+import { authMiddleware } from "../middlewares/auth";
+import { addItemToCart, changeQuantity, deletetemFromCart, getCart } from "../controllers/cart";
+
+const cartRoutes:Router = Router()
+
+cartRoutes.post("/",[authMiddleware],errorHandler(addItemToCart))
+cartRoutes.delete("/:id",[authMiddleware],errorHandler(deletetemFromCart))
+cartRoutes.get("/",[authMiddleware],errorHandler(getCart))
+cartRoutes.put("/:id",[authMiddleware],errorHandler(changeQuantity))
+
+
+
+export default cartRoutes;

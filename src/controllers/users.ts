@@ -7,7 +7,6 @@ import { User } from "@prisma/client";
 import { updateSchema } from "../schema/users";
 import { Address } from "../generated/prisma";
 import { BadRequestException } from "../exceptions/bad-request";
-import { error } from "console";
 import { InternalException } from "../exceptions/internal-exception";
 
 //Add new address....
@@ -24,6 +23,7 @@ export const addAddress = async(req:Request,res:Response) => {
       catch(err){
          throw new NotFoundException("User not found",ErrorCodes.USER_NOT_FOUND,err)
       }
+      
 
       const addAddress = await prismaClient.address.create({
         data:valiadateData
